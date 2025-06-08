@@ -10,18 +10,17 @@ This project implements an unsupervised 3D surface segmentation method based on 
   - Separate disconnected regions
   - Merge small regions
   - Merge similar regions based on surface orientation
-- Visualize segmentation results using `pyvista` 
-
+- Visualize segmentation results using `pyvista`
+- 
 ## Requirements
 
 - Python 3.7+
 - `numpy`
 - `pyvista`
 - `matplotlib`
+- scikit-learn
 
-Install dependencies via:
-
-```bash
+Install dependencies via bash
 pip install -r requirements.txt
 
 ## Run Facet segmentation using normal vector as feature descriptor
