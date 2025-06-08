@@ -32,20 +32,11 @@ def plot_with_title(plotter, mesh, scalar_name, class_count, title):
 def plot(plotter, mesh, scalar_name, class_count):    
     assert(class_count > 0)
     colors = get_color_map(class_count)
-    # if(class_count <20):
-    #     plotter.add_mesh(mesh, scalars=scalar_name,  cmap = colors, show_scalar_bar=True, show_edges=True, edge_opacity=0.3, scalar_bar_args={"fmt": "%.0f", "n_labels": class_count})
-    # else:
     plotter.add_mesh(mesh, scalars=scalar_name,  cmap = colors, show_scalar_bar=True, show_edges=True, edge_opacity=0.3, scalar_bar_args={"fmt": "%.0f", "n_labels": class_count})
 
 
 def main(normal_weight, lr, radius, obj_file, min_region_rate, threshold_similarity_merge):
-    # print("Running segmentation with the following parameters:")
-    # print(f"Learning Rate: {lr}")
-    # print(f"Radius: {radius}")
-    # print(f"Object File: {obj_file}")
-    # print(f"Min Region Face Count: {min_region_face_count}")
-    # print(f"Similarity Merge Threshold: {threshold_similarity_merge}")
-    
+   
     obj_mesh = load_obj_with_face_normals(obj_file)
     face_adjacency = build_face_adjacency(obj_mesh)
 
@@ -93,7 +84,7 @@ def main(normal_weight, lr, radius, obj_file, min_region_rate, threshold_similar
     running_time = end_time - start_time
     print(f"Total running time: {running_time:.2f} seconds")
 
-    # Create a 2x2 grid plotter ############################################################
+    # Start plotting, Create a 2x3 grid plotter ##################################################
     plotter = pv.Plotter(shape=(2, 3))
 
     plotter.subplot(0, 0) #-----------------------------------------------
@@ -103,18 +94,6 @@ def main(normal_weight, lr, radius, obj_file, min_region_rate, threshold_similar
     plot(plotter, obj_mesh, "raw_labels", raw_labels_count)   
 
     plotter.subplot(0, 2) #-----------------------------------------------
-     # obj_mesh01 = obj_mesh.copy()
-    # plot(plotter,obj_mesh01, "separated_region_labels", merged_region_labels_count)
-
-    # mesh_som = som.get_mesh() #.plot(show_edges=True)
-    # plotter.add_mesh(mesh_som, show_edges=True, color="white", opacity=0.5)   
-    
-    # som_cloud = pv.PolyData(data_for_som)
-    # colors = get_color_map(raw_labels_count)
-    # som_cloud["color"] = np.array([colors[cid] for cid in raw_labels])
-    # plotter.add_text("Clusters")
-    # plotter.add_mesh(som_cloud, scalars = "color",  cmap = colors, show_scalar_bar=True, show_edges=True, scalar_bar_args={"fmt": "%.0f", "n_labels": raw_labels_count})
-
     spherical_ori = pv.read("regular_sphere.obj")
     plotter.add_mesh(spherical_ori, color='white', opacity=0.3, show_edges=True)   
     vertex_points = spherical_ori.points     # Create point cloud for vertices
@@ -146,25 +125,14 @@ def main(normal_weight, lr, radius, obj_file, min_region_rate, threshold_similar
     obj_mesh11 = obj_mesh.copy()
     plot(plotter, obj_mesh11, "merged_similar_region_labels", merged_similar_region_labels_count)
     plotter.show()
-
-
      #End plotting               ############################################################    
 
-    # plotter = pv.Plotter()
-    # mesh_som = som.get_mesh() #.plot(show_edges=True)
-    # plotter.add_mesh(mesh_som, show_edges=True, color="white", opacity=0.5)   
-    # som_cloud = pv.PolyData(data_for_som)
-    # colors = get_color_map(raw_labels_count)
-    # som_cloud["color"] = np.array([colors[cid] for cid in raw_labels])
-    # #som_cloud["color"] =  raw_labels #     np.array([colors[cid] for cid in raw_labels])
-    # plotter.add_mesh(som_cloud, scalars = "color", cmap = colors, show_scalar_bar=True, show_edges=True, scalar_bar_args={"fmt": "%.0f", "n_labels": raw_labels_count})
-    # plotter.show()
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Spherical SOM surface segmentation.")
     parser.add_argument("--normal_weight", type=float, default = 1, help="Weight for normal direction")
     parser.add_argument("--lr", type=float, default=0.2, help="Learning rate for SOM training")
     parser.add_argument("--radius", type=float, default=0.1, help="Neighborhood radius for SOM")
-    parser.add_argument("--obj_file", type=str, required=True, help="Path to the OBJ file")
+    parser.add_argument("--obj_file", type=str, default = "./Models/brick_part01.obj",  help="Path to the OBJ file")
     parser.add_argument("--min_region_face_count", type=float, default=0.01, help="Minimum proportion of faces per region")
     parser.add_argument("--threshold_similarity_merge", type=float, default=0.8, help="Similarity threshold for region merging")
 
